@@ -114,7 +114,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-color = Color( 1, 0, 0, 0.33 )
+color = Color( 0, 0.635459, 1, 1 )
 _sections_unfolded = [ "Rect" ]
 
 [node name="Animation" type="AnimationPlayer" parent="." index="1"]

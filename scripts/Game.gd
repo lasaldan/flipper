@@ -32,7 +32,12 @@ var pieceSize
 var solved = false
 
 var grid = []
+var pieces = []
+var pieceCount = 0
+var numberConnected = 0
 var secondsElapsed = -1
+
+var startNode
 
 var highScores = {}
 		
@@ -100,15 +105,77 @@ func prepare_maze():
 	#updateBestTime()
 	solved = false
 	randomize()
+	startNode = Vector2(randi()%width,randi()%height)
 	self.grid = algorithms.get_node(algorithm).generate(width, height)
-
+	
+	for x in range(height):
+	    pieces.append([])
+	    for y in range(width):
+	        pieces[x].append(null)
+		
+	pieceCount = 0
 	place_pieces()
+	pieces[startNode.y][startNode.x].connected = true
+	validate()
 	
 func updateBestTime():
 	if(highScores[difficulty].score == -1):
 		get_node("GUI/BestTime").text = "Best Time: --:--"
 	else:
 		get_node("GUI/BestTime").text = "Best Time: " + intToTimeString(highScores[difficulty].score)
+	
+func validate():
+	for child in pieces_container.get_children():
+		child.connected = false
+		child.update()
+	numberConnected = 0
+		
+	colorCorrectFrom(startNode.x, startNode.y, 'origin')
+	
+	var solved = true
+	for child in pieces_container.get_children():
+		if !child.connected:
+			solved = false
+			
+	print(float(numberConnected) / pieceCount * 100.0)
+	
+	
+func opposite(dir):
+	if dir == "north":
+		return "south"
+	elif dir == "south":
+		return "north"
+	elif dir == "east":
+		return "west"
+	elif dir == "west":
+		return "east"
+		
+func colorCorrectFrom(col, row, dir):
+
+	var piece = pieces[row][col]
+	var directions = piece.positions[piece.currentPosition]
+	
+	if piece.connected || (dir != 'origin' && !directions[opposite(dir)]):
+		return
+		
+	piece.connected = true
+	piece.update()
+	
+	numberConnected += 1
+
+	if row > 0 && directions['north']:
+		colorCorrectFrom(col, row-1, 'north')
+		
+	if row < height-1 && directions['south']:
+		colorCorrectFrom(col, row+1, 'south')
+		
+	if col > 0 && directions['west']:
+		colorCorrectFrom(col-1, row, 'west')
+		
+	if col < width - 1 && directions['east']:
+		colorCorrectFrom(col+1, row, 'east')
+		
+	
 	
 func maze_is_valid():
 	var correctCount = 0
@@ -186,67 +253,52 @@ func place_pieces():
 			# Four Way
 			if(val & NORTH && val & SOUTH && val & EAST && val & WEST):
 				piece.type = "FourWay"
-				piece.correctPositions = [0,1,2,3]
 			
 			# Tees
 			elif(val & NORTH && val & EAST && val & WEST):
 				piece.type = "Tee"
-				piece.correctPositions = [2]
 				
 			elif(val & NORTH && val & EAST && val & SOUTH):
 				piece.type = "Tee"
-				piece.correctPositions = [3]
 				
 			elif(val & SOUTH && val & EAST && val & WEST):
 				piece.type = "Tee"
-				piece.correctPositions = [0]
 				
 			elif(val & NORTH && val & SOUTH && val & WEST):
 				piece.type = "Tee"
-				piece.correctPositions = [1]
 				
 			# Straights
 			elif(val & NORTH && val & SOUTH):
 				piece.type = "Straight"
-				piece.correctPositions = [1,3]
 				
 			elif(val & EAST && val & WEST):
 				piece.type = "Straight"
-				piece.correctPositions = [0,2]
 				
 			# Elbows
 			elif(val & NORTH && val & EAST):
 				piece.type = "Elbow"
-				piece.correctPositions = [2]
 				
 			elif(val & NORTH && val & WEST):
 				piece.type = "Elbow"
-				piece.correctPositions = [1]
 				
 			elif(val & SOUTH && val & EAST):
 				piece.type = "Elbow"
-				piece.correctPositions = [3]
 				
 			elif(val & SOUTH && val & WEST):
 				piece.type = "Elbow"
-				piece.correctPositions = [0]
 			
 			# Ends
 			elif(val & NORTH):
 				piece.type = "End"
-				piece.correctPositions = [1]
 				
 			elif(val & EAST):
 				piece.type = "End"
-				piece.correctPositions = [2]
 				
 			elif(val & SOUTH):
 				piece.type = "End"
-				piece.correctPositions = [3]
 				
 			elif(val & WEST):
 				piece.type = "End"
-				piece.correctPositions = [0]
 			
 			var scale = Vector2(ratio, ratio)
 			piece.set_scale(scale)
@@ -260,6 +312,9 @@ func place_pieces():
 			piece.set_rotation(PI * (rot / 2.0))
 			pieces_container.set_position(Vector2(0,0))
 			pieces_container.add_child(piece)
+			
+			pieces[rowIndex][colIndex] = piece
+			pieceCount += 1
 			
 			colIndex += 1
 			

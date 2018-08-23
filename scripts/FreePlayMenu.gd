@@ -11,6 +11,7 @@ func _on_Medium_pressed():
 	var game = get_parent().get_node("Game")
 	game.width = 6
 	game.height = 6
+	game.algorithm = "Kruskals"
 	game.prepare_maze()
 	get_parent().change_state("Game")
 	
@@ -18,6 +19,7 @@ func _on_Hard_pressed():
 	var game = get_parent().get_node("Game")
 	game.width = 9
 	game.height = 9
+	game.algorithm = "Kruskals"
 	game.prepare_maze()
 	get_parent().change_state("Game")
 
