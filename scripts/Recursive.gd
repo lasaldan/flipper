@@ -22,7 +22,7 @@ func generate(w, h):
 	width = w
 	height = h
 	grid = create_maze(width,height)
-	mine_from(0,0)
+	mine_from(randi()%width,randi()%height)
 	return grid
 
 func shuffleList(list):

@@ -21,25 +21,25 @@ void fragment() {
 	COLOR = col;
 }"
 
-[sub_resource type="Gradient" id=3]
+[sub_resource type="Gradient" id=2]
 
 offsets = PoolRealArray( 0, 1 )
 colors = PoolColorArray( 0.191406, 0.191406, 0.191406, 1, 0, 0, 0, 1 )
 
-[sub_resource type="GradientTexture" id=4]
+[sub_resource type="GradientTexture" id=3]
 
 flags = 4
-gradient = SubResource( 3 )
+gradient = SubResource( 2 )
 width = 2048
 
-[sub_resource type="ShaderMaterial" id=2]
+[sub_resource type="ShaderMaterial" id=4]
 
 render_priority = 0
 shader = SubResource( 1 )
-shader_param/gradient = SubResource( 4 )
+shader_param/gradient = SubResource( 3 )
 _sections_unfolded = [ "shader_param" ]
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 
 resource_name = "fadeInFreePlayMenu"
 length = 0.5
@@ -70,7 +70,7 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=6]
 
 resource_name = "fadeInGame"
 length = 0.5
@@ -132,9 +132,8 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=8]
 
-resource_name = "fadeInMainMenu"
 length = 0.5
 loop = false
 step = 0.033
@@ -172,8 +171,6 @@ script = ExtResource( 1 )
 script = ExtResource( 2 )
 
 [node name="Sounds" type="Node" parent="." index="1"]
-
-editor/display_folded = true
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="Sounds" index="0"]
 
@@ -224,7 +221,7 @@ _sections_unfolded = [ "Margin" ]
 
 [node name="RadialGradient" type="ColorRect" parent="Background" index="1"]
 
-material = SubResource( 2 )
+material = SubResource( 4 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -263,7 +260,8 @@ _sections_unfolded = [ "Anchor", "Margin" ]
 
 [node name="Game" parent="SceneWrapper" index="0" instance=ExtResource( 5 )]
 
-_sections_unfolded = [ "Visibility" ]
+visible = false
+_sections_unfolded = [ "Anchor", "Grow Direction", "Hint", "Margin", "Rect", "Visibility" ]
 
 [node name="MainMenu" parent="SceneWrapper" index="1" instance=ExtResource( 6 )]
 
@@ -286,10 +284,10 @@ autoplay = ""
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/fadeInFreePlayMenu = SubResource( 6 )
-anims/fadeInGame = SubResource( 8 )
+anims/fadeInFreePlayMenu = SubResource( 5 )
+anims/fadeInGame = SubResource( 6 )
 anims/fadeInLevelsMenu = SubResource( 7 )
-anims/fadeInMainMenu = SubResource( 5 )
+anims/fadeInMainMenu = SubResource( 8 )
 blend_times = [  ]
 
 [node name="AnimationDelay" type="Timer" parent="SceneWrapper" index="5"]

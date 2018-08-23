@@ -1,10 +1,12 @@
 extends Control
 
-var Elbow = load("res://pieces/Elbow.tscn")
-var Tee = load("res://pieces/Tee.tscn")
-var Straight = load("res://pieces/Straight.tscn")
-var FourWay = load("res://pieces/FourWay.tscn")
-var End = load("res://pieces/End.tscn")
+var Piece = load("res://pieces/piece.tscn")
+
+#var Elbow = load("res://pieces/Elbow.tscn")
+#var Tee = load("res://pieces/Tee.tscn")
+#var Straight = load("res://pieces/Straight.tscn")
+#var FourWay = load("res://pieces/FourWay.tscn")
+#var End = load("res://pieces/End.tscn")
 
 onready var pieces_container = get_node("PiecesContainer")
 onready var algorithms = get_node("Algorithms")
@@ -44,6 +46,9 @@ func _ready():
 	#get_node("GUI").position = Vector2(0, boardSize / -2 - 150)
 	#secondsElapsed = -1
 	pass
+
+func _on_BackButton_pressed():
+	get_parent().change_state("FreePlayMenu")
 
 func retrieve_high_scores():
 	var file = File.new()
@@ -135,8 +140,8 @@ func _draw():
 	var size = boardSize / width
 	var color = Color(255,255,255,.4)
 	var stroke = 1
-	var boardOffset = boardSize/-2
-	
+	var boardOffset = (1080 - boardSize)/2
+
 	#horizontal grid rows
 	var rowIndex = 0
 	for row in grid:
@@ -148,16 +153,27 @@ func _draw():
 		draw_line(Vector2(size * colIndex + boardOffset, boardOffset), Vector2(size * colIndex + boardOffset, boardSize + boardOffset), color, stroke)
 		colIndex += 1
 	
+	#bottom
 	draw_line(Vector2(boardOffset,size * rowIndex + boardOffset), Vector2(boardSize + boardOffset, size*rowIndex + boardOffset), color, stroke*8)
+	
+	#right
 	draw_line(Vector2(size * colIndex + boardOffset, boardOffset), Vector2(size * colIndex + boardOffset, boardSize + boardOffset), color, stroke*8)
-	draw_line(Vector2(boardOffset, boardOffset), Vector2(-boardOffset, boardOffset), color, stroke*8)
+	
+	#top
+	draw_line(Vector2(boardOffset, boardOffset), Vector2(boardSize + boardOffset, boardOffset), color, stroke*8)
+	
+	#left
 	draw_line(Vector2(boardOffset, boardOffset), Vector2(boardOffset, boardSize + boardOffset), color, stroke*8)
 	
 func place_pieces():
 	for child in pieces_container.get_children():
 		child.queue_free()
 	var size = boardSize / width
-	var boardOffset = boardSize/-2
+	var boardOffset = (1080.0 - boardSize)/2.0
+	var ratio = size/float(pieceSize)
+	#boardOffset = 0
+
+
 	var rowIndex = 0
 
 	for row in grid:
@@ -165,81 +181,84 @@ func place_pieces():
 		
 		for val in row:
 
-			var piece
+			var piece = Piece.instance()
 			
 			# Four Way
 			if(val & NORTH && val & SOUTH && val & EAST && val & WEST):
-				piece = FourWay.instance()
+				piece.type = "FourWay"
 				piece.correctPositions = [0,1,2,3]
 			
 			# Tees
 			elif(val & NORTH && val & EAST && val & WEST):
-				piece = Tee.instance()
+				piece.type = "Tee"
 				piece.correctPositions = [2]
 				
 			elif(val & NORTH && val & EAST && val & SOUTH):
-				piece = Tee.instance()
+				piece.type = "Tee"
 				piece.correctPositions = [3]
 				
 			elif(val & SOUTH && val & EAST && val & WEST):
-				piece = Tee.instance()
+				piece.type = "Tee"
 				piece.correctPositions = [0]
 				
 			elif(val & NORTH && val & SOUTH && val & WEST):
-				piece = Tee.instance()
+				piece.type = "Tee"
 				piece.correctPositions = [1]
 				
 			# Straights
 			elif(val & NORTH && val & SOUTH):
-				piece = Straight.instance()
+				piece.type = "Straight"
 				piece.correctPositions = [1,3]
 				
 			elif(val & EAST && val & WEST):
-				piece = Straight.instance()
+				piece.type = "Straight"
 				piece.correctPositions = [0,2]
 				
 			# Elbows
 			elif(val & NORTH && val & EAST):
-				piece = Elbow.instance()
+				piece.type = "Elbow"
 				piece.correctPositions = [2]
 				
 			elif(val & NORTH && val & WEST):
-				piece = Elbow.instance()
+				piece.type = "Elbow"
 				piece.correctPositions = [1]
 				
 			elif(val & SOUTH && val & EAST):
-				piece = Elbow.instance()
+				piece.type = "Elbow"
 				piece.correctPositions = [3]
 				
 			elif(val & SOUTH && val & WEST):
-				piece = Elbow.instance()
+				piece.type = "Elbow"
 				piece.correctPositions = [0]
 			
 			# Ends
 			elif(val & NORTH):
-				piece = End.instance()
+				piece.type = "End"
 				piece.correctPositions = [1]
 				
 			elif(val & EAST):
-				piece = End.instance()
+				piece.type = "End"
 				piece.correctPositions = [2]
 				
 			elif(val & SOUTH):
-				piece = End.instance()
+				piece.type = "End"
 				piece.correctPositions = [3]
 				
 			elif(val & WEST):
-				piece = End.instance()
+				piece.type = "End"
 				piece.correctPositions = [0]
-				
-			piece.position = Vector2(colIndex * size + size/2 + boardOffset, rowIndex * size + size/2 + boardOffset)
-			piece.scale = Vector2(size/float(pieceSize), size/float(pieceSize))
+			
+			var scale = Vector2(ratio, ratio)
+			piece.set_scale(scale)
+			
+			var pieceOffset = (pieceSize - size) / 2
+			piece.set_position(Vector2(colIndex * size + boardOffset - pieceOffset, rowIndex * size + boardOffset - pieceOffset))
+			
 
 			var rot = randi()%4
-
-			piece.currentPosition = 0
 			piece.currentPosition = rot
-			piece.get_node("Area2D/Sprite").rotation = PI * (rot / 2.0)
+			piece.set_rotation(PI * (rot / 2.0))
+			pieces_container.set_position(Vector2(0,0))
 			pieces_container.add_child(piece)
 			
 			colIndex += 1
