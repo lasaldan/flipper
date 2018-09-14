@@ -172,6 +172,8 @@ script = ExtResource( 2 )
 
 [node name="Sounds" type="Node" parent="." index="1"]
 
+editor/display_folded = true
+
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="Sounds" index="0"]
 
 stream = ExtResource( 3 )
@@ -262,6 +264,9 @@ _sections_unfolded = [ "Anchor", "Margin" ]
 
 visible = false
 _sections_unfolded = [ "Anchor", "Grow Direction", "Hint", "Margin", "Rect", "Visibility" ]
+lineColor = Color( 1, 1, 1, 0.46 )
+endColor = Color( 1, 0.679688, 0, 1 )
+connectedColor = Color( 1, 0.867524, 0.553763, 1 )
 
 [node name="MainMenu" parent="SceneWrapper" index="1" instance=ExtResource( 6 )]
 

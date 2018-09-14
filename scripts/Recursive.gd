@@ -22,6 +22,7 @@ func generate(w, h):
 	width = w
 	height = h
 	grid = create_maze(width,height)
+	grid[2][2] = 16
 	mine_from(randi()%width,randi()%height)
 	return grid
 

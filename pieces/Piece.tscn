@@ -78,7 +78,7 @@ tracks/0/keys = {
 "values": [ 180.0, 270.0 ]
 }
 
-[node name="Piece" type="TextureRect" index="0"]
+[node name="Piece" type="TextureRect"]
 
 anchor_left = 0.0
 anchor_top = 0.0
