@@ -116,7 +116,7 @@ use_filter = false
 font_data = ExtResource( 4 )
 _sections_unfolded = [ "Font", "Settings" ]
 
-[node name="Game" type="Control" index="0"]
+[node name="Game" type="Control"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -178,6 +178,7 @@ autostart = false
 
 [node name="GUI" type="Control" parent="." index="4"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0

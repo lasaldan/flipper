@@ -56,7 +56,7 @@ func _ready():
 
 	#get_node("WinMessage").hide()
 	#get_node("GUI").position = Vector2(0, boardSize / -2 - 150)
-	secondsElapsed = -1
+	secondsElapsed = 0
 
 
 func _on_BackButton_pressed():
@@ -66,9 +66,9 @@ func retrieve_high_scores():
 	var file = File.new()
 	
 	highScores = [
-		{ score = 22 },
-		{ score = 55 },
-		{ score = 202 },
+		{ score = -1 },
+		{ score = -1 },
+		{ score = -1 },
 	]
 	
 	if not file.file_exists("user://flip_high_scores.sav"):
@@ -84,7 +84,7 @@ func retrieve_high_scores():
 	
 func save_high_scores():
 	var file = File.new()
-	if file.open("user://flip_high_scores1.sav", File.WRITE) != 0:
+	if file.open("user://flip_high_scores.sav", File.WRITE) != 0:
 	    print("Error opening file")
 	    return
 	
@@ -93,8 +93,11 @@ func save_high_scores():
 
 func _on_GameTime_timeout():
 	secondsElapsed += 1
-	get_node("GUI/SecondOutput").set_text(str(intToTimeString(secondsElapsed)))
+	updateGameTime()
 	updateBestProgress()
+	
+func updateGameTime():
+	get_node("GUI/SecondOutput").set_text(str(intToTimeString(secondsElapsed)))
 	
 func intToTimeString(s):
 	var secondsElapsed = int(s)
@@ -104,10 +107,11 @@ func intToTimeString(s):
 	return elapsed
 	
 func prepare_maze():
-	secondsElapsed = -1
+	secondsElapsed = 0
 	#get_node("WinMessage").hide()
 	updateBestTime()
 	updateBestProgress()
+	updateGameTime()
 	solved = false
 	randomize()
 	startNode = Vector2(randi()%width,randi()%height)
@@ -151,8 +155,16 @@ func validate():
 	
 	if(ratioComplete == 1):
 		gameTimer.stop()
+		showComplete()
 
 	progress.rect_size = Vector2(progressWidth * ratioComplete , 40)
+
+func showComplete():
+	print("You Win!")
+	
+	if(secondsElapsed < highScores[difficulty].score || highScores[difficulty].score == -1):
+		highScores[difficulty].score = secondsElapsed
+		save_high_scores()
 
 
 func updateBestProgress():
