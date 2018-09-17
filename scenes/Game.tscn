@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scripts/Game.gd" type="Script" id=1]
 [ext_resource path="res://scenes/Algorithms.tscn" type="PackedScene" id=2]
 [ext_resource path="res://UIComponents/BackButton.tscn" type="PackedScene" id=3]
-[ext_resource path="res://fonts/AveriaSansLibre-Bold.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://fonts/Font80.tres" type="DynamicFont" id=4]
+[ext_resource path="res://fonts/Font30.tres" type="DynamicFont" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
 
@@ -92,31 +93,7 @@ anti_aliasing = true
 anti_aliasing_size = 1
 _sections_unfolded = [ "Border", "Border Width", "Corner Radius" ]
 
-[sub_resource type="DynamicFont" id=4]
-
-size = 80
-use_mipmaps = false
-use_filter = false
-font_data = ExtResource( 4 )
-_sections_unfolded = [ "Settings" ]
-
-[sub_resource type="DynamicFont" id=5]
-
-size = 30
-use_mipmaps = false
-use_filter = false
-font_data = ExtResource( 4 )
-_sections_unfolded = [ "Font", "Settings" ]
-
-[sub_resource type="DynamicFont" id=6]
-
-size = 30
-use_mipmaps = false
-use_filter = false
-font_data = ExtResource( 4 )
-_sections_unfolded = [ "Font", "Settings" ]
-
-[node name="Game" type="Control"]
+[node name="Game" type="Control" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -153,7 +130,42 @@ _sections_unfolded = [ "Size Flags", "Theme" ]
 
 [node name="Algorithms" parent="." index="1" instance=ExtResource( 2 )]
 
-[node name="BackButton" parent="." index="2" instance=ExtResource( 3 )]
+[node name="Debug" type="TextEdit" parent="." index="2"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 57.0
+margin_top = 1209.0
+margin_right = 994.0
+margin_bottom = 1852.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+text = ""
+readonly = false
+highlight_current_line = false
+syntax_highlighting = false
+show_line_numbers = false
+highlight_all_occurrences = false
+override_selected_font_color = false
+context_menu_enabled = true
+smooth_scrolling = false
+v_scroll_speed = 80.0
+hiding_enabled = 0
+wrap_lines = false
+caret_block_mode = false
+caret_blink = false
+caret_blink_speed = 0.65
+caret_moving_by_right_click = true
+
+[node name="BackButton" parent="." index="3" instance=ExtResource( 3 )]
 
 anchor_left = 0.5
 anchor_top = 0.5
@@ -169,14 +181,14 @@ custom_styles/focus = SubResource( 3 )
 custom_styles/normal = SubResource( 1 )
 _sections_unfolded = [ "Margin", "Rect", "custom_styles" ]
 
-[node name="GameTime" type="Timer" parent="." index="3"]
+[node name="GameTime" type="Timer" parent="." index="4"]
 
 process_mode = 1
-wait_time = 1.0
+wait_time = 0.1
 one_shot = false
 autostart = false
 
-[node name="GUI" type="Control" parent="." index="4"]
+[node name="GUI" type="Control" parent="." index="5"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -208,7 +220,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "00 : 00"
 percent_visible = 1.0
@@ -232,7 +244,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "-- : --"
 align = 2
@@ -257,7 +269,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Best Time"
 percent_visible = 1.0

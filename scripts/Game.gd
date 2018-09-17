@@ -1,6 +1,6 @@
 extends Control
 
-var Piece = load("res://pieces/piece.tscn")
+var Piece = load("res://pieces/Piece.tscn")
 
 onready var pieces_container = get_node("PiecesContainer")
 onready var algorithms = get_node("Algorithms")
@@ -8,6 +8,7 @@ onready var gameTimer = get_node("GameTime")
 onready var progress = get_node("GUI/Progress")
 onready var bestProgress = get_node("GUI/BestProgress")
 onready var bestTime = get_node("GUI/BestTime")
+onready var debugger = get_node("Debug")
 
 export (Color, RGBA) var lineColor
 export (Color, RGBA) var endColor
@@ -58,6 +59,8 @@ func _ready():
 	#get_node("GUI").position = Vector2(0, boardSize / -2 - 150)
 	secondsElapsed = 0
 
+func debug(msg):
+	debugger.text = debugger.text + "\n" + msg
 
 func _on_BackButton_pressed():
 	get_parent().change_state("FreePlayMenu")
@@ -71,20 +74,19 @@ func retrieve_high_scores():
 		{ score = -1 },
 	]
 	
-	if not file.file_exists("user://flip_high_scores.sav"):
+	if not file.file_exists("user://flipper_high_scores.sav"):
 		return
 	
 	# Open existing file
-	if file.open("user://flip_high_scores1.sav", File.READ) != 0:
+	if file.open("user://flipper_high_scores.sav", File.READ) != 0:
 		return
 	
 	highScores = JSON.parse(file.get_line()).result
 	file.close()
-	print(highScores)
 	
 func save_high_scores():
 	var file = File.new()
-	if file.open("user://flip_high_scores.sav", File.WRITE) != 0:
+	if file.open("user://flipper_high_scores.sav", File.WRITE) != 0:
 	    print("Error opening file")
 	    return
 	
@@ -92,7 +94,7 @@ func save_high_scores():
 	file.close()
 
 func _on_GameTime_timeout():
-	secondsElapsed += 1
+	secondsElapsed += .1
 	updateGameTime()
 	updateBestProgress()
 	
@@ -125,8 +127,12 @@ func prepare_maze():
 	pieceCount = 0
 	place_pieces()
 	pieces[startNode.y][startNode.x].connected = true
+
 	validate()
+
 	gameTimer.start()
+	
+	#get_node("GUI/SecondOutput").set_text(str(pieces_container.get_children().size()))
 	
 func updateBestTime():
 
@@ -205,31 +211,6 @@ func colorCorrectFrom(col, row, dir):
 	if col < width - 1 && directions['east']:
 		colorCorrectFrom(col+1, row, 'east')
 		
-	
-	
-func maze_is_valid():
-	print("SDKFLJSDKLFJDSFKL")
-	var correctCount = 0
-	var wrongCount = 0
-	var pieces = get_node("PiecesContainer").get_children()
-	for piece in pieces:
-		if( ! piece.valid()):
-			wrongCount += 1
-		else:
-			correctCount += 1
-
-	if(wrongCount == 0):
-		solved = true
-		#get_node("WinMessage").show()
-		
-		#if(secondsElapsed < highScores[difficulty].score || highScores[difficulty].score == -1):
-		#	highScores[difficulty].score = secondsElapsed
-		#	save_high_scores()
-		
-		
-
-		
-	return solved
 	
 func _draw():
 	if(!grid):
@@ -332,7 +313,6 @@ func place_pieces():
 				
 			elif(val & WEST):
 				piece.type = "End"
-			
 			var scale = Vector2(ratio, ratio)
 			piece.set_scale(scale)
 			
@@ -342,6 +322,7 @@ func place_pieces():
 
 			var rot = randi()%4
 			piece.currentPosition = rot
+			
 			piece.set_rotation(PI * (rot / 2.0))
 			pieces_container.set_position(Vector2(0,0))
 			pieces_container.add_child(piece)
