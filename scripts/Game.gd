@@ -115,7 +115,6 @@ func prepare_maze():
 	updateBestProgress()
 	updateGameTime()
 	solved = false
-	randomize()
 	startNode = Vector2(randi()%width,randi()%height)
 	self.grid = algorithms.get_node(algorithm).generate(width, height)
 	
@@ -231,20 +230,20 @@ func _draw():
 
 	var colIndex = 0
 	for col in grid[0]:
-		draw_line(Vector2(size * colIndex + boardOffsetX, boardOffsetY), Vector2(size * colIndex + boardOffsetX, boardSize + boardOffsetY), color, stroke)
+		draw_line(Vector2(size * colIndex + boardOffsetX, boardOffsetY), Vector2(size * colIndex + boardOffsetX, size*height + boardOffsetY), color, stroke)
 		colIndex += 1
 	
 	#bottom
 	draw_line(Vector2(boardOffsetX - mainBorderWidth,size * rowIndex + boardOffsetY + mainBorderWidth/2), Vector2(boardSize + boardOffsetX + mainBorderWidth, size*rowIndex + boardOffsetY + mainBorderWidth/2), color, mainBorderWidth)
 	
 	#right
-	draw_line(Vector2(size * colIndex + boardOffsetX + mainBorderWidth/2, boardOffsetY), Vector2(size * colIndex + boardOffsetX + mainBorderWidth/2, boardSize + boardOffsetY), color, stroke*8)
+	draw_line(Vector2(size * colIndex + boardOffsetX + mainBorderWidth/2, boardOffsetY), Vector2(size * colIndex + boardOffsetX + mainBorderWidth/2, size*height + boardOffsetY), color, stroke*8)
 	
 	#top
 	draw_line(Vector2(boardOffsetX - mainBorderWidth, boardOffsetY - mainBorderWidth/2), Vector2(boardSize + boardOffsetX + mainBorderWidth, boardOffsetY - mainBorderWidth/2), color, stroke*8)
 	
 	#left
-	draw_line(Vector2(boardOffsetX - mainBorderWidth/2, boardOffsetY), Vector2(boardOffsetX - mainBorderWidth/2, boardSize + boardOffsetY), color, stroke*8)
+	draw_line(Vector2(boardOffsetX - mainBorderWidth/2, boardOffsetY), Vector2(boardOffsetX - mainBorderWidth/2, size*height + boardOffsetY), color, stroke*8)
 
 		
 func place_pieces():

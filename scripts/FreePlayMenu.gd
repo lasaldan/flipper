@@ -1,6 +1,7 @@
 extends Control
 
 func _on_Easy_pressed():
+	randomize()
 	var game = get_parent().get_node("Game")
 	game.width = 4
 	game.height = 4
@@ -9,6 +10,7 @@ func _on_Easy_pressed():
 	get_parent().change_state("Game")
 	
 func _on_Medium_pressed():
+	randomize()
 	var game = get_parent().get_node("Game")
 	game.width = 6
 	game.height = 6
@@ -18,6 +20,7 @@ func _on_Medium_pressed():
 	get_parent().change_state("Game")
 	
 func _on_Hard_pressed():
+	randomize()
 	var game = get_parent().get_node("Game")
 	game.width = 9
 	game.height = 9
