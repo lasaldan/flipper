@@ -89,7 +89,7 @@ anti_aliasing = true
 anti_aliasing_size = 1
 _sections_unfolded = [ "Border", "Border Width", "Corner Radius" ]
 
-[node name="BackButton" type="Button"]
+[node name="BackButton" type="Button" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0

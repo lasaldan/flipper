@@ -95,6 +95,7 @@ _sections_unfolded = [ "Border", "Border Width", "Corner Radius" ]
 
 [node name="Game" type="Control"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -172,14 +173,14 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -50.0
-margin_top = 540.0
+margin_top = 740.0
 margin_right = 50.0
-margin_bottom = 640.0
+margin_bottom = 840.0
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 2 )
 custom_styles/focus = SubResource( 3 )
 custom_styles/normal = SubResource( 1 )
-_sections_unfolded = [ "Margin", "Rect", "custom_styles" ]
+_sections_unfolded = [ "Rect", "custom_styles" ]
 
 [node name="GameTime" type="Timer" parent="." index="4"]
 

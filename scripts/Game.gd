@@ -26,8 +26,14 @@ var EASY = 0
 var MEDIUM = 1
 var HARD = 2
 
+var MODE_LEVEL = 0
+var MODE_FREEPLAY = 1
+
 var algorithm = "Recursive"
 var difficulty = 0
+
+var mode = MODE_FREEPLAY
+var levelIndex = 0
 
 var boardSize
 var pieceSize
@@ -44,6 +50,7 @@ var secondsElapsed = -1
 var startNode
 
 var highScores = {}
+var currentHighScore
 		
 func _ready():
 	
@@ -63,16 +70,25 @@ func debug(msg):
 	debugger.text = debugger.text + "\n" + msg
 
 func _on_BackButton_pressed():
-	get_parent().change_state("FreePlayMenu")
+	if(mode == MODE_LEVEL):
+		get_parent().change_state("LevelsMenu")
+	else:
+		get_parent().change_state("FreePlayMenu")
 
 func retrieve_high_scores():
 	var file = File.new()
 	
-	highScores = [
-		{ score = -1 },
-		{ score = -1 },
-		{ score = -1 },
-	]
+	highScores = {
+		freeplay = [
+			{ score = -1 },
+			{ score = -1 },
+			{ score = -1 },
+		],
+		levels = [
+			{ score = -1 },
+			{ score = -1 },
+		]
+	}
 	
 	if not file.file_exists("user://flipper_high_scores.sav"):
 		return
@@ -83,6 +99,7 @@ func retrieve_high_scores():
 	
 	highScores = JSON.parse(file.get_line()).result
 	file.close()
+		
 	
 func save_high_scores():
 	var file = File.new()
@@ -108,14 +125,29 @@ func intToTimeString(s):
 	var elapsed = "%02d : %02d" % [minutes, seconds]
 	return elapsed
 	
-func prepare_maze():
+func prepare_maze(startx=0, starty=0):
+	if(startx >= width):
+		startx = 0
+		
+	if(starty >= height):
+		starty = 0
+		
+	if(mode == MODE_FREEPLAY):
+		startx = randi() % width
+		starty = randi() % height
+	
+	if(mode == MODE_LEVEL):
+		currentHighScore = highScores.levels[levelIndex].score
+	else:
+		currentHighScore = highScores.freeplay[difficulty].score
+		
 	secondsElapsed = 0
 	#get_node("WinMessage").hide()
 	updateBestTime()
 	updateBestProgress()
 	updateGameTime()
 	solved = false
-	startNode = Vector2(randi()%width,randi()%height)
+	startNode = Vector2(startx, starty)
 	self.grid = algorithms.get_node(algorithm).generate(width, height)
 	
 	for x in range(height):
@@ -128,17 +160,16 @@ func prepare_maze():
 	pieces[startNode.y][startNode.x].connected = true
 
 	validate()
-
+	
 	gameTimer.start()
 	
 	#get_node("GUI/SecondOutput").set_text(str(pieces_container.get_children().size()))
 	
 func updateBestTime():
-
-	if(highScores[difficulty].score == -1):
+	if(currentHighScore == -1):
 		bestTime.text = "--:--"
 	else:
-		bestTime.text = intToTimeString(highScores[difficulty].score)
+		bestTime.text = intToTimeString(currentHighScore)
 	
 func validate():
 	for child in pieces_container.get_children():
@@ -166,14 +197,18 @@ func validate():
 
 func showComplete():
 	print("You Win!")
-	
-	if(secondsElapsed < highScores[difficulty].score || highScores[difficulty].score == -1):
-		highScores[difficulty].score = secondsElapsed
-		save_high_scores()
+
+	if(secondsElapsed < currentHighScore || currentHighScore == -1):
+		if(mode == MODE_LEVEL):
+			highScores.levels[levelIndex].score = secondsElapsed
+		else:
+			highScores.freeplay[difficulty].score = secondsElapsed
+			
+	save_high_scores()
 
 
 func updateBestProgress():
-	bestProgress.rect_size = Vector2(min(progressWidth * (float(secondsElapsed) / highScores[difficulty].score), progressWidth), 10)
+	bestProgress.rect_size = Vector2(min(progressWidth * (float(secondsElapsed) / currentHighScore), progressWidth), 10)
 	
 func opposite(dir):
 	if dir == "north":
