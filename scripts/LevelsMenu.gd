@@ -34,4 +34,12 @@ func _level_selected(levelIndex):
 		game.algorithm = level.algorithm
 		game.prepare_maze(level.startx, level.starty)
 		
+	elif(level.type == "prefab"):
+		game.load_prefab_maze( level.data, level.startx, level.starty )
+		
+	# make sure highScores -> levels array is big enough to hold this level (presaved scores may be from previous level packs)
+	for i in range(levelIndex + 1):
+		if(len(game.highScores.levels) == i):
+			game.highScores.levels.append( {score = -1} )
+		
 	get_parent().change_state("Game")

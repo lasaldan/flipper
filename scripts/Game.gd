@@ -148,6 +148,7 @@ func prepare_maze(startx=0, starty=0):
 	updateGameTime()
 	solved = false
 	startNode = Vector2(startx, starty)
+	pieces = []
 	self.grid = algorithms.get_node(algorithm).generate(width, height)
 	
 	for x in range(height):
@@ -164,6 +165,41 @@ func prepare_maze(startx=0, starty=0):
 	gameTimer.start()
 	
 	#get_node("GUI/SecondOutput").set_text(str(pieces_container.get_children().size()))
+
+func load_prefab_maze( data, startx, starty ):
+	if(startx >= width):
+		startx = 0
+		
+	if(starty >= height):
+		starty = 0
+		
+	var levelScores = highScores.levels
+	if(levelIndex >= len(levelScores)):
+		currentHighScore = -1
+	else:
+		currentHighScore = highScores.levels[levelIndex].score
+	
+	secondsElapsed = 0
+
+	updateBestTime()
+	updateBestProgress()
+	updateGameTime()
+	solved = false
+	startNode = Vector2(startx, starty)
+	pieces = []
+	
+	for x in range(height):
+	    pieces.append([])
+	    for y in range(width):
+	        pieces[x].append(null)
+			
+	pieceCount = 0
+	place_prefab_pieces( data )
+	pieces[startNode.y][startNode.x].connected = true
+
+	validate()
+	
+	gameTimer.start()
 	
 func updateBestTime():
 	if(currentHighScore == -1):
@@ -247,7 +283,7 @@ func colorCorrectFrom(col, row, dir):
 		
 	
 func _draw():
-	if(!grid):
+	if(!pieces):
 		return
 		
 	var size = boardSize / width
@@ -259,12 +295,12 @@ func _draw():
 
 	#horizontal grid rows
 	var rowIndex = 0
-	for row in grid:
+	for row in pieces:
 		draw_line(Vector2(boardOffsetX,size * rowIndex + boardOffsetY), Vector2(boardSize + boardOffsetX, size*rowIndex + boardOffsetY), color, stroke)
 		rowIndex += 1
 
 	var colIndex = 0
-	for col in grid[0]:
+	for col in pieces[0]:
 		draw_line(Vector2(size * colIndex + boardOffsetX, boardOffsetY), Vector2(size * colIndex + boardOffsetX, size*height + boardOffsetY), color, stroke)
 		colIndex += 1
 	
@@ -280,6 +316,80 @@ func _draw():
 	#left
 	draw_line(Vector2(boardOffsetX - mainBorderWidth/2, boardOffsetY), Vector2(boardOffsetX - mainBorderWidth/2, size*height + boardOffsetY), color, stroke*8)
 
+
+func place_prefab_pieces( data ):
+	
+	for child in pieces_container.get_children():
+		child.queue_free()
+	var size = boardSize / width
+	var boardOffsetX = (1080 - boardSize)/2
+	var boardOffsetY = 200
+	var ratio = size/float(pieceSize)
+
+	var rowIndex = 0
+	
+	var constants = {
+		FOUR_WAY = 1,
+		TEE = 2,
+		STRAIGHT = 4,
+		ELBOW = 8,
+		END = 16,
+		BLOCK = 32,
+		POSITION_1 = 64,
+		POSITION_2 = 128,
+		POSITION_3 = 256,
+		POSITION_4 = 512
+	}
+
+	for row in pieces:
+		var colIndex = 0
+		
+		for val in row:
+
+			var piece = Piece.instance()
+			var pieceInfo = data[rowIndex][colIndex]
+			if(pieceInfo & constants.FOUR_WAY):
+				piece.type = "FourWay"
+			elif(pieceInfo & constants.TEE):
+				piece.type = "Tee"
+			elif(pieceInfo & constants.STRAIGHT):
+				piece.type = "Straight"
+			elif(pieceInfo & constants.ELBOW):
+				piece.type = "Elbow"
+			elif(pieceInfo & constants.END):
+				piece.type = "End"
+			else:
+				piece.type = "Block"
+				
+			var rot = 0
+			if(pieceInfo & constants.POSITION_2):
+				rot = 1
+			elif(pieceInfo & constants.POSITION_3):
+				rot = 2
+			elif(pieceInfo & constants.POSITION_4):
+				rot = 3
+			
+			var scale = Vector2(ratio, ratio)
+			piece.set_scale(scale)
+			
+			var pieceOffset = (pieceSize - size) / 2
+			piece.set_position(Vector2(colIndex * size + boardOffsetX - pieceOffset, rowIndex * size + boardOffsetY - pieceOffset))
+			
+			piece.currentPosition = rot
+			
+			piece.set_rotation(PI * (rot / 2.0))
+			pieces_container.set_position(Vector2(0,0))
+			pieces_container.add_child(piece)
+			
+			pieces[rowIndex][colIndex] = piece
+			if(piece.type != "Block"):
+				pieceCount += 1
+			
+			colIndex += 1
+			
+		rowIndex += 1
+	
+	
 		
 func place_pieces():
 	for child in pieces_container.get_children():
