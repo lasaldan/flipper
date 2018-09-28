@@ -132,7 +132,7 @@ func prepare_maze(startx=0, starty=0):
 	if(starty >= height):
 		starty = 0
 		
-	if(mode == MODE_FREEPLAY):
+	if(mode == MODE_FREEPLAY || startx < 0 && starty < 0):
 		startx = randi() % width
 		starty = randi() % height
 	

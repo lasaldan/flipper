@@ -162,7 +162,7 @@ tracks/1/keys = {
 "values": [ false, true ]
 }
 
-[node name="Main" type="Node" index="0"]
+[node name="Main" type="Node"]
 
 script = ExtResource( 1 )
 
