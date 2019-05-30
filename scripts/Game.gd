@@ -125,7 +125,19 @@ func intToTimeString(s):
 	var elapsed = "%02d : %02d" % [minutes, seconds]
 	return elapsed
 	
+func floatToTimeString(s):
+	var secondsElapsed = int(s)
+	var seconds = secondsElapsed % 60
+	var minutes = secondsElapsed % 3600 / 60
+	print(s)
+	print(secondsElapsed)
+	var elapsed = "%02d : %02d.%01d" % [minutes, seconds, (float(s)-float(secondsElapsed))*10]
+	return elapsed
+	
 func prepare_maze(startx=0, starty=0):
+	
+	get_node("Win/NewBest").hide()
+	get_node("Win").hide()
 	if(startx >= width):
 		startx = 0
 		
@@ -232,14 +244,18 @@ func validate():
 	progress.rect_size = Vector2(progressWidth * ratioComplete , 40)
 
 func showComplete():
-	print("You Win!")
 
 	if(secondsElapsed < currentHighScore || currentHighScore == -1):
+		get_node("Win/NewBest").show()
 		if(mode == MODE_LEVEL):
 			highScores.levels[levelIndex].score = secondsElapsed
 		else:
 			highScores.freeplay[difficulty].score = secondsElapsed
+	else:
+		get_node("Win/NewBest").hide()
 			
+	get_node("Win/Time").text = floatToTimeString(secondsElapsed)
+	get_node("Win").show()
 	save_high_scores()
 
 
