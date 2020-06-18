@@ -31,7 +31,7 @@ func _ready():
 		index = index + 1
 		
 	#for button in get_node("Buttons").get_children():
-    #	button.connect("pressed", self, "_level_selected", [button])
+	#	button.connect("pressed", self, "_level_selected", [button])
 
 func _on_BackButton_pressed():
 	get_parent().change_state("MainMenu")

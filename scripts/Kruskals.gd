@@ -40,13 +40,13 @@ func generate(w, h):
 	return grid
 
 func shuffleList(list):
-    var shuffledList = [] 
-    var indexList = range(list.size())
-    for i in range(list.size()):
-        var x = randi()%indexList.size()
-        shuffledList.append(list[indexList[x]])
-        indexList.remove(x)
-    return shuffledList
+	var shuffledList = [] 
+	var indexList = range(list.size())
+	for i in range(list.size()):
+		var x = randi()%indexList.size()
+		shuffledList.append(list[indexList[x]])
+		indexList.remove(x)
+	return shuffledList
 
 func get_edges():
 	for y in range(height):

@@ -3,10 +3,8 @@
 [ext_resource path="res://scripts/Piece.gd" type="Script" id=1]
 
 [sub_resource type="Animation" id=1]
-
 resource_name = "rotateTo0"
 length = 0.25
-loop = false
 step = 0.02
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:rect_rotation")
@@ -22,10 +20,8 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=2]
-
 resource_name = "rotateTo1"
 length = 0.25
-loop = false
 step = 0.02
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:rect_rotation")
@@ -41,10 +37,8 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=3]
-
 resource_name = "rotateTo2"
 length = 0.25
-loop = false
 step = 0.02
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:rect_rotation")
@@ -60,10 +54,8 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=4]
-
 resource_name = "rotateTo3"
 length = 0.25
-loop = false
 step = 0.02
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:rect_rotation")
@@ -78,58 +70,27 @@ tracks/0/keys = {
 "values": [ 180.0, 270.0 ]
 }
 
-[node name="Piece" type="TextureRect" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Piece" type="TextureRect"]
 margin_left = -128.0
 margin_top = -128.0
 margin_right = 128.0
 margin_bottom = 128.0
 rect_rotation = 360.0
 rect_pivot_offset = Vector2( 128, 128 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-stretch_mode = 0
 script = ExtResource( 1 )
-_sections_unfolded = [ "Rect" ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="ColorRect" type="ColorRect" parent="." index="0"]
-
+[node name="ColorRect" type="ColorRect" parent="."]
 visible = false
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
 margin_right = 256.0
 margin_bottom = 256.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
 color = Color( 0, 0.635459, 1, 1 )
-_sections_unfolded = [ "Rect" ]
 
-[node name="Animation" type="AnimationPlayer" parent="." index="1"]
-
-root_node = NodePath("..")
-autoplay = ""
-playback_process_mode = 1
-playback_default_blend_time = 0.0
-playback_speed = 1.0
+[node name="Animation" type="AnimationPlayer" parent="."]
 anims/rotateTo0 = SubResource( 1 )
 anims/rotateTo1 = SubResource( 2 )
 anims/rotateTo2 = SubResource( 3 )
 anims/rotateTo3 = SubResource( 4 )
-blend_times = [  ]
-
 [connection signal="gui_input" from="." to="." method="_on_Piece_gui_input"]
-
-

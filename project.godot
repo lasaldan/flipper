@@ -6,11 +6,16 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=3
+config_version=4
+
+_global_script_classes=[  ]
+_global_script_class_icons={
+
+}
 
 [application]
 
-config/name="Flipper"
+config/name="Trellis"
 run/main_scene="res://scenes/Main.tscn"
 config/icon="res://icon.png"
 
@@ -28,4 +33,5 @@ window/stretch/mode="2d"
 
 [rendering]
 
+environment/default_clear_color=Color( 0, 0, 0, 1 )
 environment/default_environment="res://default_env.tres"

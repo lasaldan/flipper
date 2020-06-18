@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scripts/Main.gd" type="Script" id=1]
 [ext_resource path="res://scripts/Global.gd" type="Script" id=2]
@@ -8,9 +8,9 @@
 [ext_resource path="res://scenes/MainMenu.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/FreePlayMenu.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/LevelsMenu.tscn" type="PackedScene" id=8]
+[ext_resource path="res://graphics/blossoms.jpg" type="Texture" id=9]
 
 [sub_resource type="Shader" id=1]
-
 code = "shader_type canvas_item;
 
 uniform sampler2D gradient;
@@ -22,28 +22,18 @@ void fragment() {
 }"
 
 [sub_resource type="Gradient" id=2]
-
-offsets = PoolRealArray( 0, 1 )
 colors = PoolColorArray( 0.191406, 0.191406, 0.191406, 1, 0, 0, 0, 1 )
 
 [sub_resource type="GradientTexture" id=3]
-
-flags = 4
 gradient = SubResource( 2 )
-width = 2048
 
 [sub_resource type="ShaderMaterial" id=4]
-
-render_priority = 0
 shader = SubResource( 1 )
 shader_param/gradient = SubResource( 3 )
-_sections_unfolded = [ "shader_param" ]
 
 [sub_resource type="Animation" id=5]
-
 resource_name = "fadeInFreePlayMenu"
 length = 0.5
-loop = false
 step = 0.033
 tracks/0/type = "value"
 tracks/0/path = NodePath("FreePlayMenu:visible")
@@ -71,10 +61,8 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=6]
-
 resource_name = "fadeInGame"
 length = 0.5
-loop = false
 step = 0.03
 tracks/0/type = "value"
 tracks/0/path = NodePath("Game:visible")
@@ -102,10 +90,8 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=7]
-
 resource_name = "fadeInLevelsMenu"
 length = 0.5
-loop = false
 step = 0.03
 tracks/0/type = "value"
 tracks/0/path = NodePath("LevelsMenu:visible")
@@ -133,9 +119,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=8]
-
 length = 0.5
-loop = false
 step = 0.033
 tracks/0/type = "value"
 tracks/0/path = NodePath("MainMenu:modulate")
@@ -163,46 +147,29 @@ tracks/1/keys = {
 }
 
 [node name="Main" type="Node"]
-
 script = ExtResource( 1 )
 
-[node name="Global" type="Node" parent="." index="0"]
-
+[node name="Global" type="Node" parent="."]
 script = ExtResource( 2 )
 
-[node name="Sounds" type="Node" parent="." index="1"]
+[node name="Sounds" type="Node" parent="."]
 
-editor/display_folded = true
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="Sounds" index="0"]
-
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 3 )
 volume_db = -20.0
 autoplay = true
-mix_target = 0
-bus = "Master"
-_sections_unfolded = [ "Transform" ]
 
-[node name="Background" type="Control" parent="." index="2"]
-
+[node name="Background" type="Control" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -20.0
-margin_right = 20.0
-margin_bottom = 20.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-_sections_unfolded = [ "Anchor" ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="FlatBG" type="ColorRect" parent="Background" index="0"]
-
+[node name="FlatBG" type="ColorRect" parent="Background"]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -211,17 +178,13 @@ margin_left = -1600.0
 margin_top = -1600.0
 margin_right = 1600.0
 margin_bottom = 1600.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
 color = Color( 0, 0, 0, 1 )
-_sections_unfolded = [ "Margin" ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="RadialGradient" type="ColorRect" parent="Background" index="1"]
-
+[node name="RadialGradient" type="ColorRect" parent="Background"]
+visible = false
 material = SubResource( 4 )
 anchor_left = 0.5
 anchor_top = 0.5
@@ -231,17 +194,12 @@ margin_left = -960.0
 margin_top = -960.0
 margin_right = 960.0
 margin_bottom = 960.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
 color = Color( 0, 0, 0, 1 )
-_sections_unfolded = [ "Anchor", "Margin", "Material" ]
 
-[node name="SceneWrapper" type="Control" parent="." index="3"]
+[node name="blossoms" type="Sprite" parent="Background"]
+texture = ExtResource( 9 )
 
+[node name="SceneWrapper" type="Control" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -250,57 +208,33 @@ margin_left = -540.0
 margin_top = -960.0
 margin_right = 540.0
 margin_bottom = 960.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
 script = ExtResource( 4 )
-_sections_unfolded = [ "Anchor", "Margin" ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Game" parent="SceneWrapper" index="0" instance=ExtResource( 5 )]
-
+[node name="Game" parent="SceneWrapper" instance=ExtResource( 5 )]
 visible = false
-_sections_unfolded = [ "Anchor", "Grow Direction", "Hint", "Margin", "Rect", "Visibility" ]
 lineColor = Color( 1, 1, 1, 0.46 )
 endColor = Color( 0.252489, 0.473191, 0.894531, 1 )
 connectedColor = Color( 0.561828, 0.763798, 1, 1 )
 
-[node name="MainMenu" parent="SceneWrapper" index="1" instance=ExtResource( 6 )]
-
-visible = false
-_sections_unfolded = [ "Margin", "Mouse", "Transform" ]
-
-[node name="FreePlayMenu" parent="SceneWrapper" index="2" instance=ExtResource( 7 )]
-
+[node name="MainMenu" parent="SceneWrapper" instance=ExtResource( 6 )]
 visible = false
 
-[node name="LevelsMenu" parent="SceneWrapper" index="3" instance=ExtResource( 8 )]
-
+[node name="FreePlayMenu" parent="SceneWrapper" instance=ExtResource( 7 )]
 visible = false
-_sections_unfolded = [ "Anchor", "Margin", "Visibility" ]
 
-[node name="Animations" type="AnimationPlayer" parent="SceneWrapper" index="4"]
+[node name="LevelsMenu" parent="SceneWrapper" instance=ExtResource( 8 )]
+visible = false
 
-root_node = NodePath("..")
-autoplay = ""
-playback_process_mode = 1
-playback_default_blend_time = 0.0
-playback_speed = 1.0
+[node name="Animations" type="AnimationPlayer" parent="SceneWrapper"]
 anims/fadeInFreePlayMenu = SubResource( 5 )
 anims/fadeInGame = SubResource( 6 )
 anims/fadeInLevelsMenu = SubResource( 7 )
 anims/fadeInMainMenu = SubResource( 8 )
-blend_times = [  ]
 
-[node name="AnimationDelay" type="Timer" parent="SceneWrapper" index="5"]
-
-process_mode = 1
+[node name="AnimationDelay" type="Timer" parent="SceneWrapper"]
 wait_time = 0.5
 one_shot = true
-autostart = false
-
 [connection signal="timeout" from="SceneWrapper/AnimationDelay" to="SceneWrapper" method="_on_AnimationDelay_timeout"]
-
-

@@ -104,8 +104,8 @@ func retrieve_high_scores():
 func save_high_scores():
 	var file = File.new()
 	if file.open("user://flipper_high_scores.sav", File.WRITE) != 0:
-	    print("Error opening file")
-	    return
+		print("Error opening file")
+		return
 	
 	file.store_line(JSON.print(highScores))
 	file.close()
@@ -164,9 +164,9 @@ func prepare_maze(startx=0, starty=0):
 	self.grid = algorithms.get_node(algorithm).generate(width, height)
 	
 	for x in range(height):
-	    pieces.append([])
-	    for y in range(width):
-	        pieces[x].append(null)
+		pieces.append([])
+		for y in range(width):
+			pieces[x].append(null)
 		
 	pieceCount = 0
 	place_pieces()
@@ -178,6 +178,107 @@ func prepare_maze(startx=0, starty=0):
 	
 	#get_node("GUI/SecondOutput").set_text(str(pieces_container.get_children().size()))
 
+static func drawLogo(boardSize, pieceSize, pieces_container, Piece):
+	var width = 10
+	var height = 10
+	var constants = {
+		FOUR_WAY = 1,
+		TEE = 2,
+		STRAIGHT = 4,
+		ELBOW = 8,
+		END = 16,
+		BLOCK = 32,
+		POSITION_1 = 64,
+		POSITION_2 = 128,
+		POSITION_3 = 256,
+		POSITION_4 = 512
+	}
+	var data = [
+		[ constants.FOUR_WAY, constants.ELBOW, constants.ELBOW, constants.END, constants.END, constants.END, constants.ELBOW, constants.ELBOW],
+		[ constants.STRAIGHT, constants.STRAIGHT, constants.TEE, constants.STRAIGHT, constants.STRAIGHT, constants.STRAIGHT, constants.ELBOW, constants.ELBOW],
+		[ constants.END, constants.END, constants.ELBOW, constants.ELBOW, constants.ELBOW, constants.END, constants.ELBOW, constants.ELBOW],
+	]
+	
+	var pieces = []
+	
+	var size = boardSize / width
+	var boardOffsetX = (1080 - boardSize)/2
+	var boardOffsetY = 200
+	var ratio = size/float(pieceSize)
+
+	var rowIndex = 0
+	
+	
+	for x in range(3):
+		pieces.append([])
+		for y in range(8):
+			pieces[x].append(null)
+			
+	var pieceCount = 0
+	
+	for child in pieces_container.get_children():
+		child.queue_free()
+		
+		
+		
+		
+		
+		
+	for row in pieces:
+		var colIndex = 0
+		
+		for val in row:
+	
+			var piece = Piece.instance()
+			var pieceInfo = data[rowIndex][colIndex]
+			if(pieceInfo & constants.FOUR_WAY):
+				piece.type = "FourWay"
+			elif(pieceInfo & constants.TEE):
+				piece.type = "Tee"
+			elif(pieceInfo & constants.STRAIGHT):
+				piece.type = "Straight"
+			elif(pieceInfo & constants.ELBOW):
+				piece.type = "Elbow"
+			elif(pieceInfo & constants.END):
+				piece.type = "End"
+			else:
+				piece.type = "Block"
+				
+			var rot = 0
+			if(pieceInfo & constants.POSITION_2):
+				rot = 1
+			elif(pieceInfo & constants.POSITION_3):
+				rot = 2
+			elif(pieceInfo & constants.POSITION_4):
+				rot = 3
+			
+			var scale = Vector2(ratio, ratio)
+			piece.set_scale(scale)
+			
+			var pieceOffset = (pieceSize - size) / 2
+			piece.set_position(Vector2(colIndex * size + boardOffsetX - pieceOffset, rowIndex * size + boardOffsetY - pieceOffset))
+			
+			piece.currentPosition = rot
+			
+			piece.set_rotation(PI * (rot / 2.0))
+			pieces_container.set_position(Vector2(0,0))
+			pieces_container.add_child(piece)
+			
+			pieces[rowIndex][colIndex] = piece
+			if(piece.type != "Block"):
+				pieceCount += 1
+			
+			colIndex += 1
+			
+		rowIndex += 1
+		
+		
+		
+		
+		
+		
+	#place_prefab_pieces( data )
+	
 func load_prefab_maze( data, startx, starty ):
 	if(startx >= width):
 		startx = 0
@@ -201,9 +302,9 @@ func load_prefab_maze( data, startx, starty ):
 	pieces = []
 	
 	for x in range(height):
-	    pieces.append([])
-	    for y in range(width):
-	        pieces[x].append(null)
+		pieces.append([])
+		for y in range(width):
+			pieces[x].append(null)
 			
 	pieceCount = 0
 	place_prefab_pieces( data )

@@ -12,6 +12,12 @@ var constants = {
 	POSITION_4 = 512
 }
 
+var logoData = [
+	[ constants.FOUR_WAY, constants.ELBOW, constants.ELBOW, constants.END, constants.END, constants.END, constants.ELBOW, constants.ELBOW],
+	[ constants.STRAIGHT, constants.STRAIGHT, constants.TEE, constants.STRAIGHT, constants.STRAIGHT, constants.STRAIGHT, constants.ELBOW, constants.ELBOW],
+	[ constants.END, constants.END, constants.ELBOW, constants.ELBOW, constants.ELBOW, constants.END, constants.ELBOW, constants.ELBOW],
+]
+
 var levels = [
 	{	
 		name = "1",
@@ -256,5 +262,18 @@ var levels = [
 		randomSeed = 12433,
 		type = "seeded",
 		algorithm = "Recursive"
+	},
+	{
+		name = "25",
+		width = 8,
+		height = 3,
+		type = "prefab",
+		startx = -1,
+		starty = -1,
+		data = [
+			[ constants.FOUR_WAY, constants.ELBOW, constants.ELBOW, constants.END, constants.END, constants.END, constants.ELBOW, constants.ELBOW],
+			[ constants.STRAIGHT, constants.STRAIGHT, constants.TEE, constants.STRAIGHT, constants.STRAIGHT, constants.STRAIGHT, constants.ELBOW, constants.ELBOW],
+			[ constants.END, constants.END, constants.ELBOW, constants.ELBOW, constants.ELBOW, constants.END, constants.ELBOW, constants.ELBOW],
+		]
 	}
 ]
