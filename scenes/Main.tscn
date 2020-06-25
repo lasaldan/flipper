@@ -215,7 +215,6 @@ __meta__ = {
 
 [node name="Game" parent="SceneWrapper" instance=ExtResource( 5 )]
 visible = false
-lineColor = Color( 1, 1, 1, 0.46 )
 endColor = Color( 0.252489, 0.473191, 0.894531, 1 )
 connectedColor = Color( 0.561828, 0.763798, 1, 1 )
 

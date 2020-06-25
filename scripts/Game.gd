@@ -179,7 +179,7 @@ func prepare_maze(startx=0, starty=0):
 	#get_node("GUI/SecondOutput").set_text(str(pieces_container.get_children().size()))
 
 static func drawLogo(boardSize, pieceSize, pieces_container, Piece):
-	var width = 10
+	var width = 8
 	var height = 10
 	var constants = {
 		FOUR_WAY = 1,
@@ -230,6 +230,7 @@ static func drawLogo(boardSize, pieceSize, pieces_container, Piece):
 		for val in row:
 	
 			var piece = Piece.instance()
+			piece.readOnly = true
 			var pieceInfo = data[rowIndex][colIndex]
 			if(pieceInfo & constants.FOUR_WAY):
 				piece.type = "FourWay"

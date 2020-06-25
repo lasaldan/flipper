@@ -13,8 +13,15 @@ var lineColor
 var endColor
 var connectedColor
 
+var readOnly = false
+
 func _ready():
-	var game = get_parent().get_parent()
+	# var game = get_parent().get_parent()
+	var tree = get_tree()
+	var root = tree.get_root()
+	var main = root.get_node("Main")
+	var wrapper = main.get_node("SceneWrapper")
+	var game = wrapper.get_node("Game")
 	lineColor = game.lineColor
 	endColor = game.endColor
 	connectedColor = game.connectedColor
@@ -68,6 +75,9 @@ func _ready():
 		]
 
 func _on_Piece_gui_input(event):
+	if readOnly:
+		return
+		
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.is_pressed() and type != "Block" && !get_parent().get_parent().solved:
 		currentPosition = (currentPosition + 1) % 4
 		get_node("Animation").play("rotateTo" + str(currentPosition))
