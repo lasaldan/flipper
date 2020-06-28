@@ -8,7 +8,7 @@
 [ext_resource path="res://scenes/MainMenu.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/FreePlayMenu.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/LevelsMenu.tscn" type="PackedScene" id=8]
-[ext_resource path="res://graphics/blossoms.jpg" type="Texture" id=9]
+[ext_resource path="res://graphics/menu.jpg" type="Texture" id=9]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -204,10 +204,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -540.0
-margin_top = -960.0
-margin_right = 540.0
-margin_bottom = 960.0
+margin_left = -538.204
+margin_top = -964.659
+margin_right = 541.796
+margin_bottom = 955.341
 script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -215,8 +215,8 @@ __meta__ = {
 
 [node name="Game" parent="SceneWrapper" instance=ExtResource( 5 )]
 visible = false
-endColor = Color( 0.252489, 0.473191, 0.894531, 1 )
-connectedColor = Color( 0.561828, 0.763798, 1, 1 )
+endColor = Color( 0.470588, 0.145098, 0.137255, 1 )
+connectedColor = Color( 0.827451, 0.415686, 0.435294, 1 )
 
 [node name="MainMenu" parent="SceneWrapper" instance=ExtResource( 6 )]
 visible = false

@@ -4,7 +4,7 @@
 [ext_resource path="res://fonts/AveriaSansLibre-Bold.ttf" type="DynamicFontData" id=2]
 
 [sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.6, 0.6, 0.6, 0 )
+bg_color = Color( 1, 0.807843, 0.960784, 0.364706 )
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -43,14 +43,15 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -250.0
-margin_top = -115.0
+margin_top = 385.0
 margin_right = 250.0
-margin_bottom = 35.0
+margin_bottom = 535.0
 mouse_default_cursor_shape = 2
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 2 )
 custom_styles/normal = SubResource( 1 )
 custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Levels"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -62,14 +63,15 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -250.0
-margin_top = 100.0
+margin_top = 600.0
 margin_right = 250.0
-margin_bottom = 250.0
+margin_bottom = 750.0
 mouse_default_cursor_shape = 2
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 2 )
 custom_styles/normal = SubResource( 1 )
 custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Free Play"
 [connection signal="pressed" from="Levels" to="." method="_on_Levels_pressed"]
 [connection signal="pressed" from="FreePlay" to="." method="_on_FreePlay_pressed"]

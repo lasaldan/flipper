@@ -61,7 +61,7 @@ func _on_Timer_timeout():
 		ticks = ticks + 1
 		if(ticks == 2):
 			for i in range(0, 24):
-				get_node("Logo").get_child(i).lineColor = Color.aqua
+				get_node("Logo").get_child(i).lineColor = Color(0.82,0.42,0.44)
 				get_node("Logo").get_child(i).update()
 			_timer.stop()
 	

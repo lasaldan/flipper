@@ -25,6 +25,9 @@ margin_bottom = 840.0
 margin_right = 1080.0
 margin_bottom = 1600.0
 rect_clip_content = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ButtonsWrapper" type="Control" parent="Buttons"]
 margin_left = 100.0
@@ -34,4 +37,7 @@ margin_bottom = 1500.0
 rect_min_size = Vector2( 880, 1500 )
 rect_clip_content = true
 mouse_filter = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="BackButton" to="." method="_on_BackButton_pressed"]

@@ -202,8 +202,8 @@ static func drawLogo(boardSize, pieceSize, pieces_container, Piece):
 	var pieces = []
 	
 	var size = boardSize / width
-	var boardOffsetX = (1080 - boardSize)/2
-	var boardOffsetY = 200
+	var boardOffsetX = (1080 - boardSize)/2 + pieceSize/9
+	var boardOffsetY = pieceSize/2
 	var ratio = size/float(pieceSize)
 
 	var rowIndex = 0
@@ -231,6 +231,7 @@ static func drawLogo(boardSize, pieceSize, pieces_container, Piece):
 	
 			var piece = Piece.instance()
 			piece.readOnly = true
+			piece.lineWidth = 60
 			var pieceInfo = data[rowIndex][colIndex]
 			if(pieceInfo & constants.FOUR_WAY):
 				piece.type = "FourWay"
